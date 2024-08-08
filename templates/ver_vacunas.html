@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacunas de {{ mascota.nombre }}</title>
+</head>
+<body>
+    <h1>Vacunas de {{ mascota.nombre }}</h1>
+    
+    <a href="{{ url_for('main.index') }}">Volver al inicio</a>
+    <a href="{{ url_for('main.nueva_vacuna', mascota_id=mascota.id) }}">Añadir nueva vacuna</a>
+
+    {% if vacunas %}
+        <ul>
+        {% for vacuna in vacunas %}
+            <li>
+                <strong>Tipo:</strong> {{ vacuna.tipo }}<br>
+                <strong>Fecha de administración:</strong> {{ vacuna.fecha_administracion }}<br>
+                <strong>Fecha de próxima dosis:</strong> {{ vacuna.fecha_proxima_dosis }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay vacunas registradas para esta mascota.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Vacunas de Mascotas</title>
+    <title>Mis Mascotas</title>
 </head>
 <body>
-    <h1>Gestión de Vacunas de Mascotas</h1>
-    <a href="{{ url_for('main.nueva_mascota')}}">Añadir nueva mascota</a>
-    <ul>
+    <h1>Mis Mascotas</h1>
+
+    <a href="{{ url_for('main.nueva_mascota') }}">Añadir nueva mascota</a>
+
+    {% if mascotas %}
+        <ul>
         {% for mascota in mascotas %}
             <li>
-                {{ mascota.nombre }} ({{ mascota.raza }}) - <a href="{{ url_for('main.nueva_vacuna', mascota_id=mascota.id)}}">Añadir Vacuna</a>
+                <strong>{{ mascota.nombre }}</strong> ({{ mascota.raza }})
+                <a href="{{ url_for('main.ver_vacunas', mascota_id=mascota.id) }}">Ver vacunas</a>
             </li>
         {% endfor %}
-    </ul>    
+        </ul>
+    {% else %}
+        <p>No hay mascotas registradas.</p>
+    {% endif %}
 </body>
 </html>

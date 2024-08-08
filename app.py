@@ -1,10 +1,15 @@
 from flask import Flask
-from models import db, Mascota, Vacuna
+from models import db
 from routes import main
-from flask_mail import Mail, Message
+#from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.config['SQL_ALCHEMY_DATABASE_URI'] = 'sqlite:///vacunas.db'
+
+# Configuración de la clave secreta (necesaria para CSRF y sesiones seguras)
+app.config['SECRET_KEY'] = 'miguel123'
+
+# Configuración de la base de datos
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vacunas.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Configuración de Flask-Mail
@@ -17,7 +22,10 @@ app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app) """
 
+ # Inicialización de la base de datos
 db.init_app(app)
+
+# Registro del blueprint
 app.register_blueprint(main)
 
 if __name__ == '__main__':

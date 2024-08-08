@@ -10,7 +10,7 @@ def index():
     return render_template('index.html', mascotas=mascotas)
 
 @main.route('/mascota/nueva',  methods=['GET', 'POST'])
-def mnueva_mascota():
+def nueva_mascota():
     form = MascotaForm()
     if form.validate_on_submit():
         nueva_mascota = Mascota(
@@ -24,7 +24,7 @@ def mnueva_mascota():
     return render_template('mascota.html', form=form)
 
 @main.route('/vacuna/nueva/<int:mascota_id>', methods=['GET', 'POST'])
-def nueva_mascota(mascota_id):
+def nueva_vacuna(mascota_id):
     form = VacunaForm()
     if form.validate_on_submit():
         nueva_vacuna = Vacuna(
@@ -37,3 +37,10 @@ def nueva_mascota(mascota_id):
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('vacuna.html', form=form)
+
+
+@main.route('/mascota/<int:mascota_id>/vacunas')
+def ver_vacunas(mascota_id):
+    mascota = Mascota.query.get_or_404(mascota_id)
+    vacunas = Vacuna.query.filter_by(mascota_id=mascota_id).all()
+    return render_template('ver_vacunas.html', mascota=mascota, vacunas=vacunas)

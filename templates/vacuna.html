@@ -7,15 +7,13 @@
 </head>
 <body>
     <h1>Nueva Vacuna</h1>
-
     <form method="POST">
         {{ form.hidden_tag() }}
-        {{ form.tipo.label }} {{ form.tipo()}}<br>
+        {{ form.tipo.label }} {{ form.tipo() }}<br>
         {{ form.fecha_administracion.label }} {{ form.fecha_administracion() }}<br>
         {{ form.fecha_proxima_dosis.label }} {{ form.fecha_proxima_dosis() }}<br>
         {{ form.submit() }}
     </form>
-   
-    <a href="{{ url_for('main.index') }}">Volver</a> 
+    <a href="{{ url_for('main.index') }}">Volver</a>
 </body>
 </html>

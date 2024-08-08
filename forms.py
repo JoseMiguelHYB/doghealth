@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 class MascotaForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()])
     raza = StringField('Raza', validators=[DataRequired()])
-    fecha_nacimiento = DateField('Fecha de Nacimiento', Validators=[DataRequired()])
+    fecha_nacimiento = DateField('Fecha de Nacimiento', validators=[DataRequired()])
     submit = SubmitField('Guardar')
 
 class VacunaForm(FlaskForm):
