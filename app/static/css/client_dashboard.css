@@ -1,0 +1,101 @@
+/* client_dashboard.css */
+
+/* Estilo del título del dashboard */
+h1 {
+    margin: 40px;
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilos para los botones con hover */
+.btn-custom {
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    padding: 10px 20px;
+}
+
+.btn-primary.btn-custom:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success.btn-custom:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary.btn-custom:hover {
+    background-color: #545b62;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la tabla de información de perros */
+table {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    border-bottom: 2px solid #ccc;
+}
+
+/* Ajustes generales */
+.dashboard-card {
+    margin: 0 15px;
+}
+
+
+/* Estilo para la barra de progreso */
+.progress {
+    position: relative;
+    height: 30px;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    font-size: 1em;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+}
+
+.greeting-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
+    height: 100%;            /* Asegúrate de que ocupe el espacio disponible */
+    text-align: center;      /* Centra el texto dentro del contenedor */
+}
+
+.greeting-text {
+    font-size: 36px; /* Aumenta el tamaño del texto y del emoji */
+    line-height: 1.5; /* Ajusta la altura de línea para un mejor espaciado */
+}
+
+/**Efecto para que la imagen del perro aumente***/
+.dog-image {
+    transition: transform 0.3s ease-in-out;
+}
+
+.dog-image:hover {
+    transform: scale(1.1); /* Aumenta el tamaño de la imagen al 110% */
+}
+
+
+
+/* Estilo para tarjetas notificadas */
+.timeline-content.notified {
+    background-color: #d4edda; /* Verde claro */
+    border-left: 5px solid #28a745; /* Verde */
+}
+
+/* Estilo para tarjetas no notificadas */
+.timeline-content.not-notified {
+    background-color: #f8d7da; /* Rojo claro */
+    border-left: 5px solid #dc3545; /* Rojo */
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacuna Próxima a Expirar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h1 class="card-title" style="color: red;">¡Atención!</h1>
+                    </div> 
+                    <div class="card-body text-center">
+                        <p class="lead" style="font-size: 1.1rem;">Desde la aplicación <strong>DogHealth</strong> queremos informarte:</p>                   
+                        <!--<img src="{{ url_foto_perro }}" alt="Foto de {{ nombre_perro }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">-->
+                        <p class="lead">
+                            La vacuna <strong style="color: #4000ffeb;">{{ nombre_vacuna }}</strong> de <strong style="color: #DD37A3;">{{ nombre_perro | upper }}</strong> está próxima a expirar en menos de 24 horas.
+                        </p>
+                        <p>Por favor, asegúrate de tomar las medidas necesarias para renovar la vacuna y mantener la salud de tu mascota.</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn btn-primary">Ver más detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

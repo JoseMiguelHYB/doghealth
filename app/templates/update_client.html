@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Actualizar Cliente{% endblock %}
+
+{% block head %}
+<meta name="description" content="Formulario para actualizar la información de un cliente.">
+<!--Sin CSS vinculado, esta tirando de Boostrap de base.html-->
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Actualizar Información del Cliente</h2>
+    <form method="POST" action="{{ url_for('update_client') }}">
+        {{ form.hidden_tag() }}
+
+        <!-- Iterar sobre los campos del formulario excepto el botón -->
+        {% for field in [form.username, form.address, form.city, form.locality, form.code_postal, form.phone,
+        form.email] %}
+        <div class="form-group">
+            {{ field.label(class="form-label") }}
+            {{ field(class="form-control") }}
+        </div>
+        {% endfor %}
+
+        <!-- Campo de contraseña con un placeholder específico -->
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Dejar en blanco si no desea cambiarla") }}
+        </div>
+
+        <!-- Botón de envío -->
+        <button type="submit" class="btn btn-primary" style="padding: 15px 30px; font-size: 20px;">CONTINUAR</button>
+
+    </form>
+
+    <!-- Botón de Atrás -->
+    <div class="home-button-container" style="margin-top: 50px; text-align: left;">
+        <a href="{{ url_for('client_dashboard') }}" class="btn btn-secondary"
+            style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Volver
+            Atrás</a>
+    </div>
+</div>
+{% endblock %}

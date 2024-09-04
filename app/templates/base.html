@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask Auth{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <nav class="{% if current_user.is_authenticated %}navbar-authenticated{% endif %}">
+        <ul>
+            <!-- Sección izquierda del navbar -->
+            <li><a href="#" class="navbar-brand">DogHealth</a></li>
+
+            <!-- Sección derecha del navbar -->
+            <div style="display: flex;">
+                {% if current_user.is_authenticated %}
+                {% if request.endpoint == 'dog_profile' %}
+                <!-- Enlace a Client Dashboard solo en la página dog_profile -->
+                <li><a href="{{ url_for('client_dashboard') }}">Client Dashboard</a></li>
+                {% endif %}
+
+                <!-- Mostrar el nombre de usuario con un dropdown para actualizar/eliminar cliente -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">{{ current_user.username }}</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('update_client') }}">Actualizar Cliente</a>
+                        <a href="{{ url_for('delete_client') }}">Eliminar Cliente</a>
+                    </div>
+                </li>
+
+                <!-- Enlace para cerrar sesión -->
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <!-- Enlaces para usuarios no autenticados -->
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </div>
+        </ul>
+    </nav>
+    <div class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

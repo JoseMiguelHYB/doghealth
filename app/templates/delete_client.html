@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Cuenta{% endblock %}
+{% block head %}
+<meta name="description" content="Pantalla para eliminar la información de un cliente.">
+<!--Sin CSS vinculado, esta tirando de Boostrap de base.html-->
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="font-size: 1.4em">
+    <h2 class="text-center text-danger" style="font-size: 2em">Eliminar Cuenta</h2>
+    <p class="text-center">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+
+    <form method="POST" action="{{ url_for('delete_client') }}">
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-danger" style="margin-bottom: 0px; font-size: 1.25em">Eliminar Mi
+                Cuenta</button>
+            <a href="{{ url_for('client_dashboard') }}" class="btn btn-secondary"
+                style="font-size: 1em; padding: 10px 20px; margin-left: 10px;">Cancelar</a>
+        </div>
+    </form>
+    <!-- Botón de Atrás -->
+    <div class="home-button-container" style="margin-top: 50px; text-align: left;">
+        <a href="{{ url_for('client_dashboard') }}" class="btn btn-secondary"
+            style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Volver
+            Atrás</a>
+    </div>
+</div>
+{% endblock %}

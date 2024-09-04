@@ -1,0 +1,178 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.login-container {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px;
+}
+
+.login-container h1 {
+  margin-bottom: 0.5rem;
+}
+
+.login-container p {
+  color: #000000;
+  margin-bottom: 1rem;
+}
+
+.login-container label {
+  display: block;
+  margin: 0.5rem 0 0.2rem;
+  text-align: left;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  padding: 12px; /* Aumenta el padding para hacer el campo más grande */
+  font-size: 1rem; /* Aumenta el tamaño de la fuente para hacer el texto más legible */
+  border: 1px solid #0000008b;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 10px; /* Aumenta el espacio entre el label y el input */
+  /* border-color: #000000; /*Border de color negrito*/
+}
+
+.info-container {
+  flex: 2;
+  min-width: 300px;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info-section {
+  margin: 1rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.info-section h2 {
+  color: #0078d7;
+  margin-bottom: 1rem;
+}
+
+.info-section h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.info-section p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.info-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.forgot-password,
+.register-link,
+.terms a {
+  color: #800080;
+  text-decoration: none;
+}
+
+.forgot-password:hover,
+.register-link:hover,
+.terms a:hover {
+  text-decoration: underline;
+}
+
+.forgot-password {
+  font-weight: bold; /* Aplicar negrita al texto */
+}
+
+.register-link {
+  font-weight: bold; /* Aplicar negrita al texto */
+}
+
+.btn {
+  background-color: #000097; /* Color rosa */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px; /* Aumenta el padding para hacer el botón más grande */
+  font-size: 20px; /* Aumenta el tamaño de la fuente */
+}
+
+.btn:hover {
+  background-color: #0909c0f1; /* Un tono más oscuro de rosa para el hover */
+}
+
+.terms {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .login-container {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+/***********Color rojo de mensaje de error cuando te logeas
+y son incorrecto el usuario o contraseña*******************/
+
+.error-message {
+  color: red;
+  display: block;
+  margin-top: 10px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.btn-primary {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+.btn-secondary {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: gray;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}

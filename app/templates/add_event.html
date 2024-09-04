@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Evento</title>
+    <!-- Vinculación al archivo CSS personalizado para la página de añadir eventos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_event.css') }}">
+    <!-- Vinculación a Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Puedes añadir aquí más enlaces a otros estilos CSS o bibliotecas externas si lo deseas -->
+</head>
+<body>
+    <div class="container">
+        <h1>Añadir Evento para <span style="text-align: center; font-size: 2.5em; color: #DD37A3; font-weight: bold; font-size: 50px;"> {{dog.name | upper}} </span></h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="event_type">Tipo de Evento:</label>
+                <input type="text" id="event_type" name="event_type" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="event_date">Fecha del Evento:</label>
+                <input type="datetime-local" id="event_date" name="event_date" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Añadir Evento</button>
+        </form>
+        <!-- Botón para volver al perfil del perro -->
+        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary mt-3">Volver al perfil de {{ dog.name }}</a>
+    </div>
+    <!-- Vinculación a Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

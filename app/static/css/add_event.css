@@ -1,0 +1,88 @@
+/* add_event.css */
+
+/* Estilos generales */
+body {
+    background-color: #f8f9fa; /* Color de fondo claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente limpia y legible */
+}
+
+.container {
+    max-width: 600px; /* Ancho máximo para mantener el formulario centrado */
+    padding: 30px;
+    background-color: #ffffff; /* Fondo blanco para el formulario */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin-top: 50px; /* Espaciado superior */
+    margin-bottom: 50px; /* Espaciado inferior */
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #343a40; /* Color de texto oscuro para el título */
+}
+
+/* Estilos para los grupos de formulario */
+.form-group label {
+    font-weight: 600;
+    color: #495057; /* Color de etiqueta ligeramente oscuro */
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Estilos para los botones */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsividad */
+@media (max-width: 576px) {
+    .container {
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 10px;
+    }
+}

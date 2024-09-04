@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+{% block title %}Perfil de {{ dog.name | upper }}{% endblock %}
+{% block content %}
+
+<!-- Enlace al archivo CSS dog_profile.css -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dog_profile.css') }}">
+
+<div class="container mt-4">
+
+    <!-- Sección para mostrar perros en forma de circulos -->
+    <div class="row justify-content-center mb-5">
+        {% if dogs %}
+        <div class="col-12 d-flex flex-wrap justify-content-center">
+            {% for other_dog in dogs %}
+            <!-- Verificar que no sea el perro actual -->
+            {% if other_dog.id != dog.id %}
+            <div class="m-2 text-center">
+                <a href="{{ url_for('dog_profile', dog_id=other_dog.id) }}" class="d-block">
+                    <!-- Imagen circular con efecto de movimiento -->
+                    <img src="{{ url_for('static', filename=other_dog.photo) }}" alt="Foto de {{ other_dog.name }}"
+                        class="img-fluid rounded-circle dog-image"
+                        style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #6c757d;">
+                </a>
+                <!-- Nombre del perro debajo de la foto -->
+                <p class="mt-2" style="font-weight: bold; color: #343a40;">{{ other_dog.name }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!--Foto principal de perro actual-->
+    <div class="text-center">
+        <div class="profile-highlight">
+            <img src="{{ url_for('static', filename=dog.photo) }}" alt="{{ dog.name }}" class="profile-img"
+                style="margin-bottom: 0px;">
+        </div>
+    </div>
+
+    <!-- Tarjeta de perfil del perro -->
+    <div class="card profile-card mt-4">
+        <div class="card-header">
+            <h1 class="text-center my-4">¡Eyy, soy <span class="dog-name">{{ dog.name | upper }}</span>!</h1>
+        </div>
+        <div class="card-body">
+            <p class="text-center"><em>{{ dog.aniadir_nota }}</em></p>
+
+            <div class="row">
+                <!-- Columna 1: Información básica -->
+                <div class="col-md-6">
+                    <div class="dog-info">
+                        <p>
+                            <img src="{{ url_for('static', filename='img/raza_dog_profile.png') }}" alt="GIF animado"
+                                style="width: 30px; height: 30px; vertical-align: middle; margin-right: 5px;">
+                            <i class="fas fa-paw"></i>
+                            <strong>Raza:</strong> {{ dog.dog_breed }}
+                        </p>
+                        <p>
+                            <img src="{{ url_for('static', filename='img/gender_dog_profile.png') }}" alt="GIF animado"
+                                style="width: 30px; height: 30px; vertical-align: middle; margin-right: 5px;">
+                            <i class="fas fa-paw"></i>
+                            <strong>Género:</strong> {{ dog.gender }}s
+                        </p>
+                        <p>
+                            <img src="{{ url_for('static', filename='img/age_dog_profile.png') }}" alt="GIF animado"
+                                style="width: 30px; height: 30px; vertical-align: middle; margin-right: 5px;">
+                            <i class="fas fa-paw"></i>
+                            <strong>Edad:</strong> {{ dog.age }} Años
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Información adicional -->
+                <div class="col-md-6">
+                    <div class="dog-info">
+                        <p>
+                            <img src="{{ url_for('static', filename='img/microchip_dog_profile.png') }}"
+                                alt="GIF animado"
+                                style="width: 30px; height: 30px; vertical-align: middle; margin-right: 5px;">
+                            <i class="fas fa-paw"></i>
+                            <strong>MicroChip:</strong> {{ dog.microchip }}
+                        </p>
+                        <p>
+                            <img src="{{ url_for('static', filename='img/weight_dog_profile.png') }}" alt="GIF animado"
+                                style="width: 30px; height: 30px; vertical-align: middle; margin-right: 5px;">
+                            <i class="fas fa-paw"></i>
+                            <strong>Peso:</strong> {{ dog.weight }} kilos
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Sección de Alergías Alimentarias-->
+    <div class="card profile-card mt-4 text-center">
+        <p>
+            <strong>Alergías Alimentarias:</strong>
+            {% if dog.allergys %}
+            {{ dog.allergys }} <br>
+
+            <!-- Contenedor para centrar las imágenes -->
+            <span style="display: inline-block; margin-top: 10px;">
+                <img src="{{ url_for('static', filename='img/allergys1_dog_profile.png') }}" alt="GIF animado"
+                    style="width: 30px; height: 30px; margin: 0 10px;">
+                <img src="{{ url_for('static', filename='img/allergys2_dog_profile.png') }}" alt="GIF animado"
+                    style="width: 30px; height: 30px; margin: 0 10px;">
+                <img src="{{ url_for('static', filename='img/allergys3_dog_profile.png') }}" alt="GIF animado"
+                    style="width: 30px; height: 30px; margin: 0 10px;">
+            </span>
+            {% else %}
+            No tiene alergias
+            {% endif %}
+            <br><i class="fas fa-paw"></i>
+        </p>
+    </div>
+
+    <!-- Sección de Vacunas -->     
+    <div class="vaccines mt-4">
+        <h2>Vacunas</h2>
+        {% if dog.vaccines %}
+    <div class="table-responsive">
+        <table class="table-minimalist">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre de la Vacuna</th>
+                    <th>Fecha de Administración</th>
+                    <th>Veterinario</th>
+                    <th>Estado de la Vacuna</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vaccine in dog.vaccines %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ vaccine.name }}</td>
+                    <td>{{ vaccine.date_administered.strftime('%d %B %Y %H:%M') }}</td>
+                    <td>{{ vaccine.veterinarian }}</td>
+                    <td>
+                        {% if vaccine.status == "Aplicada" %}
+                        <span style="color: #27a927;">✔ {{ vaccine.status }}</span>
+                        {% else %}
+                        <span style="color: #f70000;">✘ No Aplicada</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No se han registrado vacunas.</p>
+    {% endif %}
+
+        <div class="text-center mt-3">
+            <a href="{{ url_for('add_vaccine', dog_id=dog.id) }}" class="btn btn-primary btn-lg custom-btn">Añadir
+                Vacuna</a>
+            <a href="{{ url_for('view_vaccines', dog_id=dog.id) }}" class="btn btn-info btn-lg custom-btn">Ver
+                Vacunas</a>
+        </div>
+    </div>
+
+    <!-- Sección de Medicamentos -->
+    <div class="medications mt-4">
+        <h2>Medicamentos</h2>
+        {% if dog.medications %}
+        <div class="table-responsive">
+            <table class="table-minimalist">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre del Medicamento</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Fin</th>
+                        <th>Dosis</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medication in dog.medications %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ medication.name }}</td>
+                        <td>{{ medication.date_start }}</td>
+                        <td>{{ medication.date_end }}</td>
+                        <td>{{ medication.doses_per_day }}</td>
+                        <td>{{ medication.notes }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>No se han registrado medicamentos.</p>
+        {% endif %}
+    
+        <div class="text-center mt-3">
+            <a href="{{ url_for('add_medication', dog_id=dog.id) }}" class="btn btn-primary btn-lg custom-btn">Añadir
+                Medicamento</a>
+            <a href="{{ url_for('view_medications', dog_id=dog.id) }}" class="btn btn-info btn-lg custom-btn">Ver
+                Medicamentos</a>
+        </div>
+    </div>
+
+    <!-- Sección de Eventos -->
+    <div class="medical-history mt-4">
+        <h2>
+            Eventos
+            <a href="{{ url_for('add_event', dog_id=dog.id) }}" title="Añadir Evento"
+                style="text-decoration: none; font-size: 0.8em;">
+                ➕
+            </a>
+        </h2>
+        <!-- Barra de búsqueda -->
+        <form method="GET" action="{{ url_for('view_events_barrabusqueda', dog_id=dog.id) }}" class="mb-4">
+            <input type="text" name="q" placeholder="Buscar eventos..." value="{{ request.args.get('q', '') }}"
+                class="form-control" style="width: 300px; display: inline-block;">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        {% if dog.events %}
+        <ul>
+            {% for event in dog.events %}
+            <li>
+                <strong>
+                    {{ event.event_date.strftime('%d %B %Y %H:%M') }} - {{ event.event_type }}:
+                    {{ event.description }}
+                </strong>
+                <a href="{{ url_for('update_event', event_id=event.id) }}" class="mx-2" title="Editar">
+                    ✏️
+                </a>
+                <a href="{{ url_for('delete_event', event_id=event.id) }}" class="mx-2" title="Eliminar">
+                    ❌
+                </a>
+                <div id="event-{{ event.id }}" class="countdown-timer"></div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No se han registrado eventos.</p>
+        {% endif %}
+
+        <!-- Botones para añadir y ver eventos 
+    <div class="mt-3 text-center">
+        <a href="{{ url_for('add_event', dog_id=dog.id) }}" class="btn btn-primary btn-lg custom-btn">Añadir Evento</a>
+    </div>-->
+
+        <!-- Calendario de eventos -->
+        <div class="container mt-5">
+            <h2>Calendario de Eventos de <span class="dog-name">{{ dog.name | upper }}</span></h2>
+            <div id="calendar" class="calendar" style="width: 95%; margin: 0 auto;"></div> <!-- Ensanchar al 90% -->
+        </div>
+
+        <!--Incluye seguimiento de peso-->
+        <!-- Sección de Seguimiento de Peso -->
+        <div class="card profile-card mt-4">
+            <h2 class="text-center">Seguimiento de Peso de <span class="dog-name">{{ dog.name | upper }}</span></h2>
+
+
+            <!-- Formulario para ingresar el peso y la fecha -->
+            <form id="weightForm" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-sm-5">
+                        <input type="number" id="weightInput" class="form-control" placeholder="Introduce el peso (kg)"
+                            aria-label="Peso del perro" required>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="date" id="dateInput" class="form-control" aria-label="Fecha del peso" required>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary w-100">Aplicar</button>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                document.getElementById('weightForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const weight = document.getElementById('weightInput').value;
+                    const date = document.getElementById('dateInput').value;
+
+                    // Verifica que el peso y la fecha se han capturado correctamente
+                    console.log(`Weight input: ${weight}, Date input: ${date}`);
+
+                    fetch(`/add_weight_record/{{ dog.id }}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ weight: weight, date: date })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            // Aquí puedes agregar código para actualizar la gráfica después de agregar un nuevo registro
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            </script>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+    <!-- CSS de FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+    <!-- JavaScript de FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <!-- Vinculación del archivo JavaScript personalizado -->
+    <script src="{{ url_for('static', filename='js/dog_profile.js') }}"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <!-- Suponiendo que estás utilizando una biblioteca como Chart.js para mostrar la gráfica -->
+<canvas id="weightChart"></canvas>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+    // Función para obtener los registros de peso desde el servidor
+    function getWeightRecords() {
+        fetch(`/get_weight_records/{{ dog.id }}`)  // Endpoint para obtener los registros de peso
+            .then(response => response.json())
+            .then(data => {
+                // Aquí asumimos que `data` es una lista de registros con `weight` y `date`
+                const weightData = data.map(record => record.weight);
+                const dateLabels = data.map(record => new Date(record.date).toLocaleDateString());
+
+                // Actualiza la gráfica con los nuevos datos
+                updateChart(weightData, dateLabels);
+            })
+            .catch(error => console.error('Error fetching weight records:', error));
+    }
+
+    // Función para actualizar la gráfica
+    function updateChart(weightData, dateLabels) {
+        weightChart.data.labels = dateLabels;  // Actualiza las etiquetas del eje X
+        weightChart.data.datasets[0].data = weightData;  // Actualiza los datos de la gráfica
+        weightChart.update();  // Renderiza la gráfica con los nuevos datos
+    }
+
+    // Llama a getWeightRecords para obtener y mostrar los registros al cargar la página
+    getWeightRecords();
+    
+    // Event listener para agregar un nuevo registro de peso
+    document.getElementById('weightForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const weight = parseFloat(document.getElementById('weightInput').value);
+        const date = document.getElementById('dateInput').value;
+
+        if (!isNaN(weight) && weight > 0) {
+            fetch(`/add_weight_record/{{ dog.id }}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ weight: weight, date: date })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Vuelve a obtener los registros de peso y actualiza la gráfica
+                getWeightRecords();
+            })
+            .catch(error => console.error('Error adding weight record:', error));
+        }
+    });
+    
+    // Inicializa el gráfico con datos vacíos al principio
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const weightChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],  // Etiquetas de fecha
+            datasets: [{
+                label: 'Peso del Perro (kg)',
+                data: [],  // Datos de peso
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month'
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <!-- Código para inicializar el calendario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es', // Cambia el idioma a español
+                events: [
+                    {% for event in dog.events %}
+            {
+                    title: '{{ event.event_type }}: {{ event.description }}',
+                    start: '{{ event.event_date.strftime(' %Y-%m-%dT%H:%M:%S') }}',
+                color: '#007bff' // Ajusta el color según tu necesidad
+            },
+            {% endfor %}
+        ]
+    });
+        calendar.render();
+
+        {% for event in dog.events %}
+        var eventDate = new Date("{{ event.event_date.strftime('%Y-%m-%dT%H:%M:%S') }}"); /***Cuidado con el formato porque sino es el correcto PETA****/
+        var countdownElement = document.getElementById("event-{{ event.id }}");
+        actualizarCuentaRegresiva(eventDate, countdownElement, {{ event.id }});
+        {% endfor %}
+});
+        /**Cuenta atrás para enviar correo a event***/
+        function actualizarCuentaRegresiva(fechaExpiracion, elemento, eventId) {
+            let notificado = false;
+
+            function actualizar() {
+                var ahora = new Date();
+                var diferenciaTiempo = fechaExpiracion - ahora;
+
+                if (diferenciaTiempo > 0) {
+                    var diasRestantes = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+                    var horasRestantes = Math.floor((diferenciaTiempo % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutosRestantes = Math.floor((diferenciaTiempo % (1000 * 60 * 60)) / (1000 * 60));
+                    var segundosRestantes = Math.floor((diferenciaTiempo % (1000 * 60)) / 1000);
+
+                    elemento.innerHTML = `<strong>Tiempo restante para la expiración:</strong> ${diasRestantes} días, ${horasRestantes} horas, ${minutosRestantes} minutos, ${segundosRestantes} segundos</strong> <br><strong style='color: #006400;'>⏰ Evento Activo`;
+                    elemento.style.color = "";
+
+                    if (diferenciaTiempo <= 86400000 && diferenciaTiempo > 86394000 && !notificado) {
+                        notificado = true;
+                        fetch(`/check_expiration_event/${eventId}`, { method: 'POST' })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data.status);
+                                if (data.status !== 'Email enviado') {
+                                    notificado = false;
+                                }
+                            });
+                    }
+                } else {
+                    elemento.innerHTML = "<strong style='color: #dc143c;'>⏰ Evento Expirado</strong>";
+                }
+            }
+
+            // Actualiza cada segundo
+            setInterval(actualizar, 1000);
+        }
+    </script>
+
+    <!--Script de seguimiento de peso-->
+    <script>
+        // Inicializa los datos y las etiquetas (fechas)
+        let weightData = [];
+        let dateLabels = [];
+
+        // Función para generar todas las fechas del mes actual
+        function generateMonthDates(year, month) {
+            const dates = [];
+            const daysInMonth = new Date(year, month + 1, 0).getDate(); // +1 porque los meses en JavaScript son 0-indexados
+            for (let day = 1; day <= daysInMonth; day++) {
+                dates.push(new Date(year, month, day).toLocaleDateString());
+            }
+            return dates;
+        }
+
+        // Obtener el año y mes actuales
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+
+        // Genera las etiquetas del eje X para el mes actual
+        dateLabels = generateMonthDates(currentYear, currentMonth);
+
+        // Configura la gráfica de Chart.js
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        const weightChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateLabels, // Usar solo las fechas del mes actual
+                datasets: [{
+                    label: 'Peso del Perro (kg)',
+                    data: weightData,
+                    fill: false,
+                    borderColor: 'rgba(255, 0, 0, 1)', // Color rojo para la línea
+                    tension: 0.4, // Hace la línea más suave
+                    spanGaps: true, // Conectar puntos con gaps
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fecha'
+                        },
+                        type: 'category',
+                        labels: dateLabels, // Mostrar solo fechas del mes actual
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: dateLabels.length // Limitar a las fechas del mes actual
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Peso (kg)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Manejador de evento para el formulario
+        document.getElementById('weightForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Obtén los valores del peso y la fecha
+            const weight = parseFloat(document.getElementById('weightInput').value);
+            const date = new Date(document.getElementById('dateInput').value).toLocaleDateString();
+
+            // Asegúrate de que el peso es un número válido y la fecha está dentro del año actual
+            if (!isNaN(weight) && weight > 0 && dateLabels.includes(date)) {
+                // Encuentra la posición de la fecha en las etiquetas del eje X
+                const dateIndex = dateLabels.indexOf(date);
+
+                // Asigna el valor del peso al índice correspondiente
+                weightData[dateIndex] = weight;
+
+                // Actualiza la gráfica
+                weightChart.update();
+
+                // Limpia los inputs
+                document.getElementById('weightInput').value = '';
+                document.getElementById('dateInput').value = '';
+            } else {
+                alert('Por favor, introduce un peso válido y una fecha dentro del año seleccionado.');
+            }
+        });
+    </script>
+
+    <!-- Botón de Regreso -->
+    <div class="home-button-container" style="margin-top: 50px; text-align: left;">
+        <a href="{{ url_for('see_dogs') }}" class="btn btn-secondary"
+            style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Atrás</a>
+    </div>
+</div>
+
+{% endblock %}

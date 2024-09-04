@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos de {{ dog.name }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .event-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .event-list li {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e7e7e7;
+            border-radius: 8px;
+            background-color: #fafafa;
+            position: relative;
+        }
+        .event-list li:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        .event-list li strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .countdown-timer {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        .event-actions {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .event-actions a {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .event-actions a:hover {
+            color: #0056b3;
+        }
+        h2 {
+            border-bottom: 2px solid #e7e7e7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .dog-name {
+            color: #dc3545; /* Rojo bootstrap */
+        }
+        #calendar {
+            border: 1px solid #e7e7e7;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <!-- Sección de Eventos -->
+    <div class="event-list">
+        <h2>
+            Eventos 
+            <a href="{{ url_for('add_event', dog_id=dog.id) }}" title="Añadir Evento" class="text-success">
+                ➕
+            </a>
+        </h2>
+
+        <!-- Barra de búsqueda -->
+        <form method="GET" action="{{ url_for('view_events_barrabusqueda', dog_id=dog.id) }}" class="form-inline mb-4">
+            <input type="text" name="q" placeholder="Buscar eventos..." value="{{ request.args.get('q', '') }}" class="form-control mr-2">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <strong>
+                        {{ event.event_date.strftime('%d %B %Y %H:%M') }} - {{ event.event_type }}: 
+                        {{ event.description }}
+                    </strong>
+                    <div class="event-actions">
+                        <a href="{{ url_for('update_event', event_id=event.id) }}" title="Editar">
+                            ✏️
+                        </a>
+                        <a href="{{ url_for('delete_event', event_id=event.id) }}" title="Eliminar">
+                            ❌
+                        </a>
+                    </div>
+                    <div id="event-{{ event.id }}" class="countdown-timer"></div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No se han registrado eventos.</p>
+        {% endif %}
+    </div>   
+    <!-- Botón de Regreso -->
+    <div class="home-button-container">
+        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary" style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Atrás</a>
+    </div>
+   
+</div>
+
+<!-- CSS de FullCalendar -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+<!-- JavaScript de FullCalendar -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<!-- Vinculación del archivo JavaScript personalizado -->
+<script src="{{ url_for('static', filename='js/dog_profile.js') }}"></script>
+<!-- Tus scripts personalizados -->
+</body>
+</html>

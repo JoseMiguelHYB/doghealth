@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Añadir Vacuna{% endblock %}
+
+{% block head %}
+<meta name="description" content="Formulario para añadir una vacuna para la mascota.">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_vaccine.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Añadir Vacuna para <span class="dog-name">{{ dog.name }}</span></h2>
+    <form method="POST" action="{{ url_for('add_vaccine', dog_id=dog.id) }}">
+        
+        <div class="form-group">
+            <label for="name" class="form-label">Nombre de la Vacuna:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_administered" class="form-label">Fecha de Administración:</label>
+            <input type="datetime-local" id="date_administered" name="date_administered" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="veterinarian" class="form-label">Veterinario:</label>
+            <input type="text" id="veterinarian" name="veterinarian" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label for="notes" class="form-label">Notas:</label>
+            <textarea id="notes" name="notes" class="form-control"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-3">Añadir Vacuna</button>
+    </form> 
+</div>
+
+<!-- Botón de Atrás -->
+<div class="mt-3">
+    <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary">Atrás</a>
+</div>
+
+{% endblock %}

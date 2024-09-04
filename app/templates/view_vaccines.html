@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil de {{ dog.name | upper }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!--Mensaje de la cabecera-->
+    <div class="col-12 mb-4">
+        <h3 class="text-center">Vacunas Recientes para <span class="dog-name">{{ dog.name | upper }}</span></h3>
+        <p class="text-center mt-4">
+            ¿No encuentras la vacuna que estás buscando?
+            <a href="{{ url_for('add_vaccine', dog_id=dog.id) }}"
+                style="text-decoration: underline; color: #007bff; font-weight: bold;">¡Haz clic aquí para añadir una
+                nueva vacuna!</a>
+        </p>
+    </div>
+
+    {% if vaccines %}
+    {% for vaccine in vaccines %}
+    <div class="col-md-4 mb-4 vaccine-card" data-vaccine-id="{{ vaccine.id }}">
+        <div class="card" style="background-color: #f7feffe6;">
+            <div class="card-body" style="padding: 13px;">
+                <img src="{{ url_for('static', filename='img/vaccine.png') }}" alt="Ícono de Medicamento"
+                    style="height: 28px; width: 28px; vertical-align: middle; margin-right: 5px;">
+                <span class="badge badge-info mt-3" style="font-size: 13px;">Vacuna</span>
+                <h5 class="card-title" style="margin-top: 12px;">{{ vaccine.name }}</h5>
+                <p class="card-text" style="margin-bottom: 0px;">
+                    Veterinaria/o: <br>
+                    <strong>{{ vaccine.veterinarian }}</strong>
+                </p>
+                <p class="card-text">
+                    Fecha de administración: <br>
+                    <strong>{{ vaccine.date_administered.strftime('%d %B %Y %H:%M') }}</strong>
+                </p>
+
+                <!-- Mostrar el estado de la vacuna con color condicional -->
+                <p class="card-text">
+                    Estado de la vacuna: <br>
+                    <strong id="estado-vacuna-{{ vaccine.id }}"
+                            style="color: {% if vaccine.status == 'Aplicada' %}green{% else %}red{% endif %};">
+                        {% if vaccine.status == 'Aplicada' %}
+                        Aplicada
+                        {% else %}
+                        No Aplicada
+                        {% endif %}
+                    </strong>
+                </p>
+
+                <!-- Contador de días restantes -->
+                {% if vaccine.status != 'Aplicada' %}
+                <p id="countdown-{{ vaccine.id }}" class="countdown"></p>
+                <div id="confirm-buttons-{{ vaccine.id }}" style="display: none;">
+                    <form action="{{ url_for('update_vaccine_status', vaccine_id=vaccine.id) }}" method="POST"
+                        style="display:inline;">
+                        <input type="hidden" name="status" value="Aplicada">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                            style="font-size: 17px; padding: 7px 15px; background-color: #6f42c1; border-color: #6f42c1;">Aplicada</button>
+                    </form>
+                    <form action="{{ url_for('update_vaccine_status', vaccine_id=vaccine.id) }}" method="POST"
+                        style="display:inline;">
+                        <input type="hidden" name="status" value="No Aplicada">
+                        <button type="submit" class="btn btn-warning btn-sm"
+                            style="font-size: 17px; padding: 7px 15px; background-color: #6c757d; border-color: #6c757d; color: white;">No
+                            Aplicada</button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <!-- Botones Actualizr y Eliminar siempre visibles -->
+                <div class="mt-3">
+                    <a href="{{ url_for('update_vaccine', vaccine_id=vaccine.id) }}" class="btn btn-warning btn-lg"
+                        style="font-size: 17px; padding: 7px 15px;">Actualizar</a>
+
+                    <form action="{{ url_for('delete_vaccine', vaccine_id=vaccine.id) }}" method="POST"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-lg"
+                            style="font-size: 17px; padding: 7px 15px; margin-bottom: 0px;">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <p>No se han registrado vacunas.</p>
+    </div>
+    {% endif %}
+
+    <!-- Botón de Atrás -->
+    <div class="col-12 mt-4">
+        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary">Atrás</a>
+    </div>
+
+</div>
+
+<!-- Incluir el archivo CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view_vaccines.css') }}">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function actualizarCuentaRegresiva(fechaExpiracion, elemento, vacunaId) {
+            var ahora = new Date();
+            var diferenciaTiempo = fechaExpiracion - ahora;
+            var notificado = false;
+
+            if (diferenciaTiempo > 0) {
+                var diasRestantes = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+                var horasRestantes = Math.floor((diferenciaTiempo % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutosRestantes = Math.floor((diferenciaTiempo % (1000 * 60 * 60)) / (1000 * 60));
+                var segundosRestantes = Math.floor((diferenciaTiempo % (1000 * 60)) / 1000);
+
+                elemento.innerHTML = `Tiempo restante para la expiración: <strong>${diasRestantes} días, ${horasRestantes} horas, ${minutosRestantes} minutos, ${segundosRestantes} segundos</strong>`;
+                elemento.style.color = "";
+
+                // Verificar si falta exactamente o aproximadamente 24 horas para la expiración
+                if (diferenciaTiempo <= 86400000 && diferenciaTiempo > 86394000 && !notificado) {
+                    notificado = true;
+                    fetch(`/check_expiration/${vacunaId}`, { method: 'POST' })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.status);
+                            if (data.status !== 'Email enviado') {
+                                notificado = false;
+                            }
+                        });
+                }
+
+            } else {
+                elemento.innerHTML = "<strong>¿Se llegó a poner la vacuna?</strong>";
+                document.getElementById('confirm-buttons-' + vacunaId).style.display = 'block';
+            }
+        }
+
+        var vacunas = [
+            {% for vaccine in dog.vaccines %}
+            {
+            id: "{{ vaccine.id }}",
+            fechaExpiracion: new Date("{{ vaccine.date_administered.strftime('%Y-%m-%dT%H:%M:%S') }}"),
+        },
+        {% endfor %}
+    ];
+
+    vacunas.forEach(function (vacuna) {
+        var elementoCuentaRegresiva = document.getElementById("countdown-" + vacuna.id);
+        if (elementoCuentaRegresiva) {
+            setInterval(function () {
+                actualizarCuentaRegresiva(vacuna.fechaExpiracion, elementoCuentaRegresiva, vacuna.id);
+            }, 1000);
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

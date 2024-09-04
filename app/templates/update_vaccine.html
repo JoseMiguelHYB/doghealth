@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Actualizar Vacuna{% endblock %}
+{% block content %}
+<h2>Actualizar Vacuna</h2>
+
+<div class="container mt-4">
+    <form method="POST" action="{{ url_for('update_vaccine', vaccine_id=vaccine.id) }}">
+        <label for="name">Nombre de la Vacuna:</label>
+        <input type="text" id="name" name="name" value="{{ vaccine.name }}" required><br>
+
+        <label for="date_administered">Fecha de Administración:</label>
+        <input type="datetime-local" id="date_administered" name="date_administered"
+            value="{{ vaccine.date_administered }}" required><br>
+
+        <label for="veterinarian">Veterinario:</label>
+        <input type="text" id="veterinarian" name="veterinarian" value="{{ vaccine.veterinarian }}"><br>
+
+        <label for="notes">Notas:</label>
+        <textarea id="notes" name="notes">{{ vaccine.notes }}</textarea><br>
+
+        <button type="submit">Actualizar Vacuna</button>
+    </form>
+</div>
+
+{% endblock %}

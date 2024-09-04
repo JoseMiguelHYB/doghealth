@@ -1,0 +1,140 @@
+.container {
+  max-width: 82%; /* Aumenta el ancho del contenedor al 90% del ancho total de la página */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-img {
+  width: 370px;
+  height: 370px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  border: 5px solid #4f14ff4e; /* Color vibrante */
+}
+
+.profile-card {
+  border: none;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dog-name {
+  color: #dd37a3;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.dog-info p {
+  font-size: 1.1em;
+  color: #555;
+}
+
+.dog-info i {
+  color: #dd37a3;
+  margin-right: 8px;
+}
+
+.vaccines h2,
+.medications h2,
+.medical-history h2 {
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #373fdd;
+  padding-bottom: 10px;
+}
+
+.vaccines ul,
+.medications ul,
+.medical-history ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.vaccines ul li,
+.medications ul li,
+.medical-history ul li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto de sombra y transición para los perros circulares */
+.dog-image {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.dog-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/***************Las estrellitas alrededor del ciruclo********************************************/
+.profile-highlight {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-highlight::before,
+.profile-highlight::after {
+  content: "⭐⭐⭐";
+  /* Puedes ajustar el número de estrellas */
+  position: absolute;
+  top: -20px;
+  /* Ajusta según sea necesario */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+  color: gold;
+  /* Cambia el color si lo deseas */
+}
+
+.profile-highlight::after {
+  top: auto;
+  bottom: -20px;
+}
+
+.profile-img {
+  border: 6px solid gold;
+  /* Borde dorado para destacar la imagen */
+  border-radius: 50%;
+  /* Para una imagen redonda */
+}
+
+
+
+/*********Style de tablero Vacinas, Medicación y Events*********************/
+    .table-minimalist {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+    }
+
+    .table-minimalist th,
+    .table-minimalist td {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table-minimalist thead {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        font-weight: bold;
+        border-bottom: 2px solid #ccc;
+    }
+
+    .table-minimalist tbody tr {
+        background-color: #fff;
+        transition: background-color 0.2s ease;
+    }
+
+    .table-minimalist tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table-minimalist th {
+        border-bottom: 2px solid #ddd;
+    }

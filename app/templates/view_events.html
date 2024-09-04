@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Eventos de {{ dog.name | upper }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <h3 class="text-center">Eventos Recientes para <span class="dog-name">{{ dog.name | upper }}</span></h3>
+    </div>
+
+    {% if dog.events %}
+    {% for event in dog.events %}
+    <div class="col-md-4 mb-4 event-card" data-event-id="{{ event.id }}">
+        <div class="card" style="background-color: #f7feffe6;">
+            <div class="card-body" style="padding: 13px;">
+                <img src="{{ url_for('static', filename='img/event.png') }}" alt="Ícono de Evento" style="height: 28px; width: 28px; vertical-align: middle; margin-right: 5px;">
+                <span class="badge badge-info mt-3" style="font-size: 13px;">Evento</span>
+                <h5 class="card-title" style="margin-top: 12px;">{{ event.type }}</h5>
+
+                <!-- Descripción del evento -->
+                <p class="card-text" style="margin-bottom: 0px;">
+                    Descripción: <br> 
+                    <strong>{{ event.description }}</strong>
+                </p>                   
+                <p class="card-text">
+                    Fecha del evento: <br> 
+                    <strong>{{ event.event_date.strftime('%d %B %Y %H:%M') }}</strong>
+                </p>
+
+                <div>
+                    <a href="{{ url_for('update_event', event_id=event.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        
+                    <form action="{{ url_for('delete_event', event_id=event.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 0px;">Eliminar</button>
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <p>No se han registrado eventos.</p>
+    </div>
+    {% endif %}
+
+    <!-- Botón de Atrás -->
+    <div class="col-12 mt-4">
+        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary">Atrás</a>
+    </div>
+</div>
+
+<!-- Incluir el archivo CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view_events.css') }}">
+
+{% endblock %}

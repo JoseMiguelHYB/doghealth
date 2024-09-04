@@ -1,0 +1,25 @@
+/* Cambia el color de la barra de progreso */
+#progress-bar::-webkit-progress-value {
+    background-color: #4CAF50; /* Verde */
+}
+
+#progress-bar::-moz-progress-bar {
+    background-color: #4CAF50; /* Verde */
+}
+
+#progress-bar {
+    background-color: #e0e0e0; /* Fondo de la barra */
+    border-radius: 5px;
+    height: 20px;
+}
+
+
+#progress-text {
+    color: #000000; /* Fondo de la barra */
+
+}
+
+.dog-name {
+    color: #DD37A3;
+    font-size: 1.2em;
+  }

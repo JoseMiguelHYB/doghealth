@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Añadir Medicamento{% endblock %}
+{% block content %}
+<h2 style="text-align: center; font-size: 3em;">Añadir Medicamento para <span class="dog-name"> {{ dog.name }}</span></h2>
+<div class="form-container">
+    <form action="{{ url_for('add_medication', dog_id=dog.id) }}" method="POST">
+        <label for="name">Nombre del Medicamento:</label>
+        <input type="text" id="name" name="name" required><br>
+    
+        <label for="date_start">Fecha de Inicio:</label>
+        <input type="date" id="date_start" name="date_start" required><br>
+    
+        <label for="date_end">Fecha de Fin:</label>
+        <input type="date" id="date_end" name="date_end" required><br>
+    
+        <label for="doses_per_day">Dosis por Día:</label>
+        <input type="number" id="doses_per_day" name="doses_per_day" value="2" min="1" required><br>
+    
+        <label for="time_of_first_dose">Hora de la primera dosis:</label>
+        <input type="time" id="time_of_first_dose" name="time_of_first_dose" required><br>
+
+        <label for="interval_hours">Intervalo entre dosis (en horas):</label>
+        <input type="number" id="interval_hours" name="interval_hours" value="2" min="1" required><br>
+    
+        <label for="notes">Notas:</label>
+        <textarea id="notes" name="notes"></textarea><br>
+    
+        <button type="submit">Guardar Medicamento</button>
+    </form> 
+</div>
+
+<!-- Botón de Atrás -->
+<div class="mt-3">
+    <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary">Atrás</a>
+</div>
+
+<!-- Incluir el archivo CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_medication.css') }}">
+
+{% endblock %}

@@ -1,0 +1,154 @@
+/* Asegura que el contenedor ocupe toda la pantalla */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f3e8; /* Fondo de la página */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    width: 100vw; /* Ocupa toda la anchura de la pantalla */
+    overflow: hidden; /* Elimina cualquier desbordamiento */
+}
+
+.left, .right {
+    flex: 1; /* Hace que cada div ocupe la mitad del ancho del contenedor */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.left, .right {
+    flex: 1; /* Hace que cada div ocupe la mitad del ancho del contenedor */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.left {
+    background-color: #00002C; /* Color de fondo para la sección izquierda */
+    color: #C995F8; /* Color de texto */
+    text-align: left; /* Alinea el texto a la izquierda */
+    padding-left: 3%;
+    padding-right: 3%;
+    flex-direction: column; /* Asegura que el contenido esté en columna */
+    align-items: flex-start; /* Alinea el contenido al inicio */
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 0px;
+    position: relative; /* Asegúrate de que el contenedor esté posicionado */
+
+}
+
+#dynamicText {
+    margin-bottom: 20px; /* Añade espacio entre el texto principal y el subtítulo */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 50px; /* Ajusta este valor al tamaño deseado */
+    margin-bottom: 20px; /* Añade espacio entre el texto principal y el subtítulo */
+    margin-top: 0px;
+
+}
+
+#dynamicSubText {
+    margin: 0; /* Elimina el margen superior */
+    color: #ffffff  ; /* Asegura que el color del texto sea consistente */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 37px; /* Ajusta este valor al tamaño deseado */
+    margin: 0; /* Elimina el margen superior */
+}
+
+#titleRight {
+    font-size: 50px; /* Ajusta el tamaño del texto según sea necesario */
+    padding-bottom: 20px;
+    color: #ffffff; /* Color del texto */
+    margin-bottom: 0px; /* Espacio debajo del título */
+    font-weight: bold; /* Negrita para que resalte */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.right {
+    background-color: #000000; /* Color de fondo para la sección derecha */
+    text-align: center; /* Alinea el contenido al centro */
+    padding-right: 0%;
+    padding-left: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinea el título y los botones en el centro */
+    height: 100%; /* Asegura que el div ocupe toda la altura */
+    position: relative;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    /*flex-direction: row; /* Cambia la dirección a fila */
+    gap: 20px;  /* Aumenta el espacio entre los botones */
+}
+
+button {
+    padding: 10px 20px; /* Aumenta el tamaño del padding para botones más grandes */
+    font-size: 28px; /* Incrementa el tamaño de la fuente */
+    cursor: pointer;
+    border: none;
+    background-color: #2A64D6;
+    color: white;
+    border-radius: 8px; /* Ajusta el radio para bordes más suaves */
+    margin-bottom: 0; /* Elimina margen inferior individual */
+}
+
+button:hover {
+    background-color: #1f4db6; /* Añade un efecto hover para mejorar la interactividad */
+}
+
+
+/*legal*/
+
+.legal {
+    bottom: 10px;
+    right: 10px;
+    left: 10px; /* Añadir esto para hacer que se ajuste al ancho del contenedor */
+    font-size: 20px;
+    color: #bebebe;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center; /* Centra el texto dentro del div */
+}
+
+.legal a {
+    text-decoration: none;
+    color: #989797;
+}
+
+.legal a:hover {
+    text-decoration: underline;
+}
+
+#logo {
+    width: 80px; /* Ajusta el tamaño según tus necesidades */
+    height: auto; /* Mantiene la proporción del logo */
+    position: absolute;
+    top: 35px; /* Ajusta según sea necesario */
+    left: 100px; /* Alinea a la izquierda */
+}
+
+/*desvanecimiento*/
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#dogHealth {
+    color: #DD37A3; /* Cambia el color de "DogHealth" a rosa */
+}
+
+
+
+
+/*Testimonios*/

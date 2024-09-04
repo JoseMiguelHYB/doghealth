@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Actualizar Medicación{% endblock %}
+
+{% block content %}
+<h2>Actualizar Medicación</h2>
+
+<form action="{{ url_for('update_medication', medication_id=medication.id) }}" method="POST">
+    <label for="name">Nombre de la Medicación:</label>
+    <input type="text" id="name" name="name" value="{{ medication.name }}" required><br>
+
+    <label for="date_start">Fecha de Inicio:</label>
+    <input type="date" id="date_start" name="date_start" value="{{ medication.date_start }}" required><br>
+    
+    <label for="date_end">Fecha de Fin:</label>
+    <input type="date" id="date_end" name="date_end" value="{{ medication.date_end }}" required><br>
+    
+    <label for="doses_per_day">Dosis por Día:</label>
+    <input type="number" id="doses_per_day" name="doses_per_day" value="{{ medication.doses_per_day }}" min="1" required><br>
+    
+    <label for="time_of_first_dose">Hora de la primera dosis:</label>
+    <input type="time" id="time_of_first_dose" name="time_of_first_dose" value="{{ medication.time_of_first_dose }}" required><br>
+
+    <label for="interval_hours">Intervalo entre dosis (en horas):</label>
+    <input type="number" id="interval_hours" name="interval_hours" value="{{ medication.interval_hours }}" min="1" required><br>
+    
+    <label for="notes">Notas:</label>
+    <textarea id="notes" name="notes">{{ medication.notes }}</textarea><br>
+
+    <button type="submit">Actualizar Medicamento</button>
+</form>
+
+<!-- Botón de Regreso -->
+<div class="home-button-container" style="margin-top: 50px; text-align: left;">
+    <a href="{{ url_for('view_medications', dog_id=medication.dog_id) }}" class="btn btn-secondary" style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Atrás</a>
+</div>
+{% endblock %}

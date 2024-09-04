@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Evento para tu Perro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white text-center">
+                        <h1 class="card-title">Nuevo Evento</h1>
+                    </div> 
+                    <div class="card-body text-center">
+                        <p class="lead" style="font-size: 1.1rem;">Desde la aplicación <strong>DogHealth</strong>, te notificamos un nuevo evento relacionado con tu perro:</p>
+                        <!--<img src="{{ url_foto_perro }}" alt="Foto de {{ nombre_perro }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">-->
+                        <p class="lead">
+                            El evento <strong style="color: #007bff;">{{ tipo_evento }}</strong> para <strong style="color: #DD37A3;">{{ nombre_perro | upper }}</strong> está programado para <strong>{{ fecha_evento }}</strong>.
+                        </p>
+                        <p>Por favor, asegúrate de estar preparado y tomar las medidas necesarias.</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn btn-primary">Ver más detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

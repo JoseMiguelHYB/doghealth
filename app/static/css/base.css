@@ -1,0 +1,149 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background-color: #333;
+  padding: 1rem;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 1rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.content {
+  margin: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input,
+form button {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.form-container {
+  width: 370px; /* Ancho del formulario */
+  margin: 50px auto; /* Centra horizontalmente y agrega un margen superior */
+  padding: 20px; /* Relleno interno */
+  background-color: #f4f4f4; /* Fondo del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Sombra para un efecto de profundidad */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff; /* Color del botón */
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Campo de selección */
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+}
+
+.navbar-authenticated {
+  background-color: #4000ffeb;
+}
+
+/* Estilos de navbar principal */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+}
+nav ul li {
+  margin-right: 20px;
+}
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 19px; /* Aumenta el tamaño de la letra */
+  padding: 3px 7px;
+  display: block;
+}
+nav ul li a:hover {
+  color: #0effff; /* Cambia el color del texto al hacer hover */
+  border-radius: 5px; /* Opcional: añade bordes redondeados en el hover */
+}
+
+.dropdown-content {
+  position: absolute;
+  background-color: #4000ffeb;
+  display: none;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.navbar-brand {
+  margin-left: 20px;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  color: #0effff;
+}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Actualizar Evento para {{ dog.name }}{% endblock %}
+{% block content %}
+<h2 style="text-align: center; font-size: 3em;">Actualizar Evento para <span style="text-align: center; font-size: 3em; color: #DD37A3; font-weight: bold; font-size: 50px;"> {{dog.name | upper}} </span></h2>
+
+<div class="container mt-4">
+    <form method="POST" action="{{ url_for('update_event', event_id=event.id) }}">
+        <div class="mb-3">
+            <label for="event_type" class="form-label">Tipo de Evento</label>
+            <input type="text" class="form-control" id="event_type" name="event_type" value="{{ event.event_type }}"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="description" name="description" value="{{ event.description }}"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="event_date" class="form-label">Fecha y Hora</label>
+            <input type="datetime-local" class="form-control" id="event_date" name="event_date"
+                value="{{ event_date_formatted }}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+{% endblock %}

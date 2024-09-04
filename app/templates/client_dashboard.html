@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% block title %}Panel del Cliente{% endblock %}
+{% block head %}
+<meta name="description" content="Página principal del client llamado dashboard_client.">
+<!--Sin CSS vinculado, esta tirando de Boostrap de base.html-->
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-5"> <!-- Cambiado a container-fluid -->
+    <!-- Título del Dashboard -->
+    <h1 class="text-center mb-4"
+        style="font-size: 3.5em; font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        Dashboard de Cliente
+    </h1>
+
+    <!-- Contenedor específico para el saludo -->
+    <div class="greeting-container" style="text-align: center;">
+        <p id="greeting" class="greeting-text" style="font-size: 35px;">{{ greeting }}</p>
+    </div>
+
+    <!--Una breve descripción de la bienvenida-->
+    <p class="text-center mb-5" style="font-size: 1.2em;">
+        ¡Hola <span style="font-weight: bold; color: #4000ffeb;">{{ current_user.username | upper }}</span>!
+        Bienvenido a tu espacio personal donde puedes gestionar con facilidad todo lo relacionado con la salud de tu
+        mascota. Ya sea que necesites actualizar su información, programar una cita médica o llevar un control detallado
+        de sus vacunas y medicaciones, aquí lo tienes todo al alcance de tu mano.
+    </p>
+
+    <!-- Barra de # de Mascotas Registradas -->
+    <div class="container mt-4">
+        <h3 class="text-center"># de Mascotas Registradas</h3>
+        <div class="progress mb-4" style="height: 30px;">
+            <div class="progress-bar" role="progressbar"
+                style="width: {{ (dogs|length / 5) * 100 }}%; background-color: #4caf50;"
+                aria-valuenow="{{ dogs|length }}" aria-valuemin="0" aria-valuemax="5">
+                {{ dogs|length }} Perros Registrados
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección para mostrar perros en forma de circulos -->
+    <div class="row justify-content-center mb-5">
+        {% if dogs %}
+        <div class="col-12 d-flex flex-wrap justify-content-center">
+            {% for dog in dogs %}
+            <div class="m-2 text-center">
+                <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="d-block">
+                    <!-- Imagen circular con efecto de movimiento -->
+                    <img src="{{ url_for('static', filename=dog.photo) }}" alt="Foto de {{ dog.name }}"
+                        class="img-fluid rounded-circle dog-image"
+                        style="width: 170px; height: 170px; object-fit: cover; border: 3px solid #6c757d;">
+                </a>
+                <h6 class="mt-2" style="font-size: 1.70rem;">{{ dog.name | capitalize }}</h6>
+                <!-- Emojis para Editar y Eliminar -->
+                <div>
+                    <a href="{{ url_for('update_dog', dog_id=dog.id) }}" class="mx-2" title="Editar">
+                        ✏️
+                    </a>
+                    <a href="{{ url_for('delete_dog', dog_id=dog.id) }}" class="mx-2" title="Eliminar">
+                        ❌
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="col-12 text-center">
+            <p>No tienes perros registrados. ¡Agrega uno ahora!</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Opciones del dashboard -->
+    <div class="row justify-content-center mb-5">
+        <!-- Tarjeta de Agregar Perro -->
+        <div class="col-md-4 mb-4">
+            <a href="{{ url_for('add_dog') }}" class="text-decoration-none"> <!-- Hacer clic en toda la tarjeta -->
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-center" style="font-size: 2rem;">➕</h5> <!-- Tamaño del emoji -->
+                        <i class="fas fa-plus-circle" style="color: green; font-size: 3rem;"></i>
+                        <!-- Tamaño del ícono -->
+                        <p class="card-text text-center" style="font-size: 1.25rem;">Agrega información sobre tu perro.
+                        </p> <!-- Tamaño del texto -->
+                        <div class="btn btn-primary btn-custom mt-auto"
+                            style="font-size: 1.25rem; padding: 1rem 1.5rem;"> <!-- Tamaño del botón -->
+                            <i class="fas fa-plus"></i> Agregar Perro
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Sección de logs vacinas, medicamentos y eventos de mis Perros-->
+        <div class="container-fluid px-5"> <!-- Cambiado a container-fluid con padding extra -->
+            <h2 class="mb-3">Historial de Vacunas, Medicamentos y Eventos de mis Perros</h2> <!-- Cambiado mb-5 a mb-3 -->
+            <div class="row">
+                {% for dog in dogs %}
+                <div class="col mb-4"> <!-- Columnas automáticas de Bootstrap -->
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-black text-white d-flex align-items-center">
+                            <i class="fas fa-dog fa-2x mr-3"></i> <!-- Icono de perro -->
+                            <h4 class="mb-0 dog-name">{{ dog.name | capitalize }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                <!-- Iterar sobre las vacunas del perro -->
+                                {% if dog.vaccines %}
+                                {% for vaccine in dog.vaccines %}
+                                <div class="timeline-item">
+                                    <div class="timeline-dot bg-info text-white">
+                                        <i class="fas fa-syringe"></i> <!-- Icono de jeringa para vacunas -->
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h5>💉 Vacuna {{ vaccine.name }} </h5>
+                                        <p>{{ vaccine.date_administered.strftime('%d/%m/%Y %H:%M') }}</p>
+                                        {% if vaccine.date_administered >= current_time %}
+                                        <p class="text-success" style="font-size: 1.2em; font-weight: bold;">
+                                            Esta vacuna está activa
+                                        </p> {% else %}
+                                        <p class="text-danger" style="font-size: 1.2em; font-weight: bold;">
+                                            Esta vacuna ha expirado
+                                        </p> {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <!-- Iterar sobre los medicamentos del perro -->
+                                {% if dog.medications %}
+                                {% for medication in dog.medications %}
+                                <div class="timeline-item">
+                                    <div class="timeline-dot bg-primary text-white">
+                                        <i class="fas fa-pills"></i> <!-- Icono de pastilla para medicamentos -->
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h5>💊 Medicamento {{ medication.name }}</h5>
+                                        <p>{{ medication.date_start.strftime('%d/%m/%Y') }}</p>
+                                        <p style="color: #0040ff; font-size: 1.2em; font-weight: bold;">
+                                            Tratamiento en curso
+                                        </p>
+                                    
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <!-- Iterar sobre los eventos del perro -->
+                                {% for event in dog.events %}
+                                <div class="timeline-item">
+                                    <div class="timeline-dot bg-success text-white">
+                                        <i class="fas fa-calendar-check"></i> <!-- Icono de calendario -->
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h5>
+                                            {% if event.event_type == "Corte de pelo" %}
+                                            ✂️
+                                            {% elif event.event_type == "Limpieza de dientes" %}
+                                            🦷
+                                            {% elif event.event_type == "Test de insulina" %}
+                                            📟
+                                            {% elif event.event_type == "Revisión" %}
+                                            🩺
+                                            {% else %}
+                                            📅
+                                            {% endif %}
+                                            {{ event.event_type }}
+                                        </h5>
+                                        <p>{{ event.event_date.strftime('%d/%m/%Y %H:%M') }}</p>
+                                        {% if event.event_date >= current_time %}
+                                        <p class="text-success" style="font-size: 1.2em; font-weight: bold;">
+                                            Este evento está activo
+                                        </p>
+                                        {% else %}
+                                        <p class="text-danger" style="font-size: 1.2em; font-weight: bold;">
+                                            Este evento ha expirado
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="timeline-item">
+                                    <div class="timeline-dot bg-warning text-white">
+                                        <i class="fas fa-exclamation-triangle"></i> <!-- Icono de advertencia -->
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>No hay eventos registrados para este perro.</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Botón de Salir -->
+        <div class="home-button-container" style="margin-top: 50px; text-align: left;">
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary"
+                style="text-decoration: none; color: white; padding: 10px 20px; background-color: black; border-radius: 5px;">Salir</a>
+        </div>
+    </div>
+
+    <!-- REVISAR: Estilos personalizados, me gustaria llevarlo a client_dashboard.css -->
+    <style>
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-left: 20px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #17a2b8;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .timeline-content {
+            margin-left: 50px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-content h5 {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .timeline-content p {
+            margin-bottom: 0;
+        }
+
+        .bg-black {
+            background-color: #0793a3;
+            /* Negro */
+        }
+    </style>
+
+    <!-- Incluye el archivo client_dashboard.js al final del documento HTML -->
+    <script src="{{ url_for('static', filename='js/client_dashboard.js') }}"></script>
+
+    {% endblock %}

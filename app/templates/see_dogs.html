@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Mis Perros{% endblock %}
+{% block content %}
+<h2 style="text-align: center; font-size: 3em;">Mis Perros</h2>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        {% if dogs %}
+            {% for dog in dogs %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+                        <!-- Redirección al perfil del perro al hacer clic en la imagen -->
+                        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}">
+                            {% if dog.photo %}
+                                <img src="{{ url_for('static', filename=dog.photo) }}" class="card-img-top img-fluid" alt="{{ dog.name }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='img/default-dog.jpg') }}" class="card-img-top img-fluid" alt="Imagen no disponible" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ dog.name }}</h5>
+                            <p class="card-text">Raza: {{ dog.dog_breed }}</p>
+                            <p class="card-text">Género: {{ dog.gender }}</p>
+                            <p class="card-text">Edad: {{ dog.age }} años</p>
+                            <!-- Botones de Editar y Eliminar -->
+                            <a href="{{ url_for('update_dog', dog_id=dog.id) }}" class="btn btn-primary">Editar</a>
+                            <a href="{{ url_for('delete_dog_page', dog_id=dog.id) }}" class="btn btn-danger">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p style="text-align: center;">No tienes perros registrados.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Botón de regreso -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('client_dashboard') }}" class="btn btn-secondary">Atrás</a>
+    </div>
+</div>
+
+{% endblock %}

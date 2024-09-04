@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Eliminar Evento para {{ dog.name }}{% endblock %}
+{% block content %}
+<h2 style="text-align: center; font-size: 3em;">Eliminar Evento para {{ dog.name }}</h2>
+
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">¿Estás seguro?</h4>
+        <p>Estás a punto de eliminar el evento <strong>{{ event.event_type }} - {{ event.description }}</strong> programado para <strong>{{ event.event_date.strftime('%d %B %Y %H:%M') }}</strong> para <strong>{{ dog.name }}</strong>. Esta acción no se puede deshacer.</p>
+    </div>
+    <form method="POST" action="{{ url_for('delete_event', event_id=event.id) }}">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{{ url_for('dog_profile', dog_id=dog.id) }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

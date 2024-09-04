@@ -1,0 +1,16 @@
+ /* Estilo del enlace */
+ a {
+    color: #000000; /* Color inicial del enlace */
+    text-decoration: none; /* Sin subrayado */
+}
+
+/* Estilo del enlace al posicionarse sobre él */
+a:hover {
+    color: #FF5733; /* Cambia este color al que prefieras */
+}
+
+button:hover {
+    background-color: #0056b3; /* Color del botón al pasar el cursor */
+}
+
+

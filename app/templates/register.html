@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h1>Regístrate</h1>
+            <p>Introduce tus datos</p>
+
+            <!-- Formulario de Registro -->
+            <form method="POST" action="{{ url_for('register') }}">
+                {{ form.hidden_tag() }} <!--Para proteger contra CSRF es execelente-->
+
+                <!-- Mostrar mensajes de error generales -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <!-- Fin de Mostrar mensaje de error generales -->
+
+                <!-- Iteración sobre los campos del formulario -->
+                {% for field in [form.username, form.address, form.city, form.locality, form.code_postal, form.phone,
+                form.email, form.password] %}
+                <div class="form-group">
+                    {{ field.label }}
+                    {{ field(class="form-control") }}
+                    {% if field.errors %}
+                    <span class="error-message">{{ field.errors[0] }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary"
+                    style="padding: 15px 30px; font-size: 20px;">CONTINUAR</button>
+
+            </form>
+
+            <!-- Enlace a login -->
+            <div class="login-link">
+                <p>¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

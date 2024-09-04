@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalla de Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <!--<img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo de DogHealth" id="logo">-->
+            <h1 id="dynamicText"></h1>
+            <p id="dynamicSubText"></p>
+        </div>
+        <div class="right">
+            <h1 id="titleRight">Empieza a usar <span id="dogHealth">DogHealth</span><span id="dogEmoji">🐕</span></h1>
+            <div class="buttons">
+                <!-- Botón de Iniciar Sesión redirigiendo a la página de login -->
+                <a href="{{ url_for('login') }}"><button>🔒 Iniciar Sesión</button></a>
+                <!-- Botón de Registrarte redirigiendo a la página de registro -->
+                <a href="{{ url_for('register') }}"><button>🙋 Registrarte&nbsp;&nbsp;&nbsp;</button></a>
+            </div>
+            <div class="legal">
+                <a href="#">Términos de uso</a> | <a href="#">Política de privacidad</a>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>

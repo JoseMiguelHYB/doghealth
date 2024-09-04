@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}Perfil de {{ dog.name | upper }}{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Medicación de {{ dog.name | upper }}</title>
+
+    <style>
+        .segment {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .completed {
+            background-color: #c8e6c9; /* Verde claro */
+            color: #388e3c; /* Verde oscuro */
+        }
+
+        .pending {
+            background-color: #ffe082; /* Amarillo claro */
+            color: #f57f17; /* Amarillo oscuro */
+        }
+
+        /* Barra de Progreso */
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress {
+            height: 20px;
+            background-color: #4caf50; /* Verde */
+            border-radius: 10px;
+            width: 0%; /* Start with 0% */
+            transition: width 1s ease-in-out; /* Añadido para una transición suave */
+        }
+
+        /* Estilos para mensajes de alerta */
+        .alert {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .alert.success {
+            background-color: #c8e6c9; /* Verde claro */
+            color: #388e3c; /* Verde oscuro */
+        }
+
+        .alert.warning {
+            background-color: #ffe082; /* Amarillo claro */
+            color: #f57f17; /* Amarillo oscuro */
+        }
+
+        .alert.show {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Animación de aparición */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-center my-4">La Medicación <span class="dog-name">{{medication.name}}</span> para <span class="dog-name"> {{dog.name | upper}} </span></h3>
+        <h3 class="text-center my-4" style="color: rgb(7, 42, 117); font-style: italic;">Línea del tiempo</h3>
+        
+        <!-- Renderiza la dosis de cada día -->
+        <div class="timeline">
+            {% for day in days_range %}
+            <div class="day">
+                <h3>Día {{ loop.index }} - {{ day.strftime('%A %d de %B del %Y') }}</h3> <!-- Mostrar la fecha formateada -->
+
+                <!-- Verificar si hay dosis para el día actual -->
+                {% set doses = medication_schedule.get(day, []) %}
+
+                {% if doses and doses|length > 0 %}
+                    <!-- Iterar sobre las dosis programadas para el día actual -->
+                    {% for dose in doses %}
+                        <div class="segment {{ 'completed' if dose.completed else 'pending' }}">
+                            <input type="checkbox" class="dose-checkbox" data-dose="{{ dose.id }}" style="margin-right: 8px;" {{ 'checked' if dose.completed else '' }}> 
+                            {{ dose.time }}: <span> Dosis {{ loop.index }} ({{ medication.name }})</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-doses">
+                        <span>No hay dosis programadas para este día.</span>
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Barra de Progreso -->
+        <div class="progress-bar">
+            <div class="progress"></div>
+            <span id="progress-text">0 de {{ total_doses }} dosis completadas (0%)</span>
+        </div>
+
+        <!-- Mensajes de alerta -->
+        <div id="alert-success" class="alert success">¡Medicación completada correctamente! 🎉</div>
+        <div id="alert-warning" class="alert warning">¡Cuidado! No te saltes ninguna dosis.</div>
+
+        <!-- Elementos de audio -->
+        <audio id="audio-success" src="{{ url_for('static', filename='audio/success.mp3') }}"></audio>
+        <audio id="audio-warning" src="{{ url_for('static', filename='audio/warning.mp3') }}"></audio>
+        <audio id="audio-click" src="{{ url_for('static', filename='audio/click-sound.mp3') }}"></audio>
+        <audio id="audio-success-complete" src="{{ url_for('static', filename='audio/success-complete.mp3') }}"></audio>
+
+        <!-- Botón de Eliminación de Medicación -->
+        <form id="delete-form" action="{{ url_for('delete_medication', medication_id=medication.id) }}" method="POST" style="display:none;">
+            <div style="text-align: center;">
+                <button type="submit" id="delete-button" class="btn btn-danger">Medicación Completada</button>
+            </div>
+        </form>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const checkboxes = document.querySelectorAll(".dose-checkbox");
+                const progress = document.querySelector(".progress");
+                const progressText = document.getElementById("progress-text");
+                const alertSuccess = document.getElementById("alert-success");
+                const alertWarning = document.getElementById("alert-warning");
+                const audioSuccess = document.getElementById("audio-success");
+                const audioWarning = document.getElementById("audio-warning");
+                const audioClick = document.getElementById("audio-click");
+                const audioSuccessComplete = document.getElementById("audio-success-complete");
+                const deleteForm = document.getElementById("delete-form");
+
+                let lastState = null;
+
+                function playClickSound() {
+                    audioClick.currentTime = 0;
+                    audioClick.play();
+                    setTimeout(() => {
+                        audioClick.pause();
+                    }, 1000);
+                }
+
+                function playSuccessSound() {
+                    audioSuccess.currentTime = 0;
+                    audioSuccess.play();
+                    setTimeout(() => {
+                        audioSuccess.pause();
+                    }, 1200); //intervalo de sonido durante 1,2 segundos
+                }
+
+                function updateProgress() {
+                    const totalDoses = checkboxes.length;
+                    const completedDoses = document.querySelectorAll(".dose-checkbox:checked").length;
+                    const percentage = (completedDoses / totalDoses) * 100;
+
+                    progress.style.width = `${percentage}%`;
+                    progressText.innerHTML = `${completedDoses} de ${totalDoses} dosis completadas (${Math.round(percentage)}%)`;
+
+                    checkboxes.forEach(checkbox => {
+                        const segment = checkbox.parentElement;
+                        if (checkbox.checked) {
+                            segment.classList.add("completed");
+                            segment.classList.remove("pending");
+                        } else {
+                            segment.classList.remove("completed");
+                            segment.classList.add("pending");
+                        }
+                    });
+
+                    if (completedDoses === totalDoses && lastState !== "completed") {
+                        alertSuccess.classList.add("show");
+                        alertWarning.classList.remove("show");
+                        audioSuccessComplete.play();
+                        lastState = "completed";
+                        deleteForm.style.display = "block";
+                    } else if (completedDoses < totalDoses && lastState !== "incomplete") {
+                        alertWarning.classList.add("show");
+                        alertSuccess.classList.remove("show");
+                        audioWarning.play();
+                        lastState = "incomplete";
+                        deleteForm.style.display = "none";
+                    }
+                }
+
+                function updateDoseStatus(doseId, completed) {
+                    fetch(`/update_dose/${doseId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ completed: completed })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            console.log(data.message);
+                        } else {
+                            console.error('Error al actualizar la dosis:', data.error);
+                        }
+                        updateProgress(); // Actualiza la barra de progreso después de la respuesta
+                    })
+                    .catch(error => console.error('Error en la solicitud:', error));
+                }
+
+                // Inicializar la barra de progreso al cargar la página
+                updateProgress();
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function() {
+                        playClickSound();
+                        if (checkbox.checked) {
+                            playSuccessSound();
+                        }
+
+                        updateDoseStatus(checkbox.dataset.dose, checkbox.checked); // Actualiza el estado en el servidor
+                    });
+                });
+            });
+        </script>
+    </div>
+
+    <!-- Botón de Atrás -->
+    <div class="col-12 mt-4">
+        <a href="{{ url_for('view_medications', dog_id=dog.id) }}" class="btn btn-secondary">Atrás</a>
+    </div>
+</body>
+</html>
+
+<!-- Incluir el archivo CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/medication_profile.css') }}">
+
+{% endblock %}

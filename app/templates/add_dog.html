@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Agregar Perro{% endblock %}
+{% block content %}
+<h2 style="text-align: center; font-size: 3em;">Agregar un Perro</h2>
+<div class="form-container">
+    <form method="POST" action="{{ url_for('add_dog') }}" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Nombre del perro" required>
+        <input type="text" name="dog_breed" placeholder="Raza" required>
+        <input type="text" name="microchip" placeholder="Número de Microchip" pattern="\d{15}"
+            title="El número de microchip debe tener 15 dígitos" required>
+
+        <!-- Botones de opción para seleccionar el género -->
+        <div class="mb-3">
+            <label for="gender" class="form-label"><b>Género:</b></label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="male" value="macho" checked>
+                <label class="form-check-label" for="male">Macho</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="female" value="hembra">
+                <label class="form-check-label" for="female">Hembra</label>
+            </div>
+        </div>
+
+        <!-- Campo de fecha de nacimiento -->
+        <div class="mb-3">
+            <label for="birthdate" class="form-label"><b>Fecha de Nacimiento:</b></label>
+            <input type="date" class="form-control" name="birthdate" id="birthdate" required>
+        </div>
+
+        <!-- Campo de edad calculada automáticamente (solo lectura) -->
+        <div class="mb-3">
+            <label for="age" class="form-label"><b>Edad:</b></label>
+            <input type="text" class="form-control" name="age" id="age" placeholder="Edad" readonly>
+        </div>
+
+        <input type="number" name="weight" placeholder="Peso en kg" required min="1" step="1">
+
+        <input type="text" name="allergys" placeholder="Alergias" required>
+
+        <!-- Campo para añadir notas -->
+        <div class="mb-3">
+            <label for="aniadir_nota" class="form-label"><b>Notas:</b></label>
+            <textarea class="form-control" name="aniadir_nota" id="aniadir_nota" rows="4"
+                placeholder="Escribe algunas notas sobre tu perro (opcional)"></textarea>
+        </div>
+
+        <!--<input type="file" name="photo" accept="image/*" required> Campo para la foto -->
+
+
+        <div class="file-upload-wrapper">
+            <input type="file" name="photo" id="photo" accept="image/*" required class="file-upload-input">
+            <label for="photo" class="file-upload-label">Seleccionar foto</label>
+            <div id="file-name" class="file-name">Ningún archivo seleccionado</div>
+        </div>
+
+        <button type="submit">Aceptar</button>
+    </form>
+</div>
+
+<!-- Botón de Atrás -->
+<div class="col-12 mt-4">
+    <a href="{{ url_for('client_dashboard') }}" class="btn btn-secondary">Atrás</a>
+</div>
+
+<!-- Incluir el archivo CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_dog.css') }}">
+<!-- Incluir el script externo -->
+<script src="{{ url_for('static', filename='js/js_add_dog.js') }}"></script>
+
+{% endblock %}
